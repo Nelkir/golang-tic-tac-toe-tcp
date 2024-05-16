@@ -15,10 +15,11 @@ type Game struct {
 
 func NewGame(players Players) Game {
 	players.Message("Hello, Players! Game is starting!")
+	players[0].Greeting()
+	players[1].Greeting()
 	game := Game{
 		players:    players,
 		state:      Playing,
-		field:      newField(),
 		xFieldMask: 0,
 		oFieldMask: 0,
 	}
@@ -34,12 +35,24 @@ func (game *Game) Move() error {
 		player = game.players[1]
 	}
 
+	game.players.Message(game.PrettyField())
 	move, err := player.Move()
 	if err != nil {
 		return err
 	}
-	game.SetFieldCell(move, player)
 
+	if !player.Connected {
+		game.state = Error
+	}
+
+	err = game.SetFieldCell(move, player)
+	if err != nil {
+		return fmt.Errorf("Failed to set field cell: %s\n", err)
+	}
+
+	game.Check()
+
+	game.turn = !game.turn
 	return nil
 }
 
@@ -75,6 +88,8 @@ func (game *Game) FieldSync() {
 			game.field[i] = 'X'
 		} else if game.oFieldMask&(1<<i) > 0 {
 			game.field[i] = 'O'
+		} else {
+			game.field[i] = ' '
 		}
 	}
 }
@@ -100,4 +115,19 @@ func (game *Game) SetFieldCell(move int, player Player) error {
 	game.FieldSync()
 
 	return nil
+}
+
+func (game *Game) PrettyField() string {
+	screen := ""
+
+	for i, cell := range game.field {
+		switch i {
+		case 2, 5, 8:
+			screen += fmt.Sprintf("%c\n", cell)
+		default:
+			screen += fmt.Sprintf("%c | ", cell)
+		}
+	}
+
+	return screen
 }

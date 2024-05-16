@@ -6,6 +6,7 @@ import (
 	"tictac/internal/client"
 	"tictac/internal/envs"
 	"tictac/internal/server"
+	"tictac/internal/tictac"
 )
 
 func main() {
@@ -25,7 +26,7 @@ func main() {
 		})
 	}
 
-	_ = connection
+	tictac.Start(tictac.NewLocalPlayer('O'), tictac.NewRemotePlayer('X', connection))
 
 	return
 }

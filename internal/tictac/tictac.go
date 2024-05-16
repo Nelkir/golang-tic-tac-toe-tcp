@@ -1,10 +1,13 @@
 package tictac
 
+import "fmt"
+
 const (
 	Playing = iota
 	XWins
 	OWins
 	Draw
+	Error
 )
 
 type State int
@@ -15,19 +18,21 @@ func Start(player1 Player, player2 Player) {
 	game := NewGame(players)
 
 	for game.state == Playing {
-		if game.turn {
-			game.players[0].Move()
-		} else {
+		err := game.Move()
+		if err != nil {
+			fmt.Printf("Failed to perform move: %s\n", err)
+		}
+
+		switch game.state {
+		case XWins:
+			game.players.Message("X Wins!\n")
+			return
+		case OWins:
+			game.players.Message("O Wins!\n")
+		case Draw:
+			game.players.Message("Draw!\n")
+		case Error:
+			fmt.Printf("Player left game!\n")
 		}
 	}
-}
-
-func newField() [9]rune {
-	var field [9]rune
-	for _, cell := range field {
-		cell = ' '
-		_ = cell
-	}
-
-	return field
 }
