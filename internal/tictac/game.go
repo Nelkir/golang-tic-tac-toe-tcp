@@ -14,7 +14,7 @@ type Game struct {
 }
 
 func NewGame(players Players) Game {
-	players.Message("Hello, Players! Game is starting!")
+	players.Message("Hello, Players! Game is starting!\n")
 	players[0].Greeting()
 	players[1].Greeting()
 	game := Game{

@@ -31,7 +31,7 @@ func (players Players) Message(message string) {
 }
 
 func (player *Player) Greeting() {
-	player.write(fmt.Sprintf("Hello, Player! Your character is %q\n", player.Rune))
+	player.write(fmt.Sprintf("Your character is %q\n", player.Rune))
 }
 
 func (player *Player) write(message string) (int, error) {
