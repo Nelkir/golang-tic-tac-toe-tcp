@@ -34,5 +34,6 @@ func Start(player1 Player, player2 Player) {
 		case Error:
 			fmt.Printf("Player left game!\n")
 		}
+		players.Message(game.PrettyField())
 	}
 }

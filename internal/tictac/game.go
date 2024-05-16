@@ -35,7 +35,6 @@ func (game *Game) Move() error {
 		player = game.players[1]
 	}
 
-	game.players.Message(game.PrettyField())
 	move, err := player.Move()
 	if err != nil {
 		return err
