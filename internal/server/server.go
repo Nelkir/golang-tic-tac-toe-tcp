@@ -31,12 +31,19 @@ func Talk(conn net.Conn) {
 	}
 }
 
-func Start(conf ServerConfig) {
-	address := fmt.Sprintf("%s:%d", conf.IP, conf.Port)
-	listener, err := net.Listen("tcp", address)
+func Start(conf ServerConfig) net.Conn {
+	address, err := net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", conf.IP, conf.Port))
+	if err != nil {
+		fmt.Printf("Failed to resolve tcp address: %s\n", err)
+		return nil
+	}
+
+	fmt.Printf("Starting on %q\n", address.String())
+
+	listener, err := net.ListenTCP("tcp", address)
 	if err != nil {
 		fmt.Printf("Server failed to listen on %q: %s\n", address, err)
-		return
+		return nil
 	}
 
 	fmt.Printf("Server listening on %q\n", address)
@@ -48,6 +55,7 @@ func Start(conf ServerConfig) {
 			continue
 		}
 		fmt.Printf("Client connected %q\n", connection.RemoteAddr())
-		go Talk(connection)
+
+		return connection
 	}
 }

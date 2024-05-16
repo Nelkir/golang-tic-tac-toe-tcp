@@ -1,0 +1,26 @@
+
+	// if game.field[0][0] == game.field[0][1] && game.field[0][1] == game.field[0][2] {
+	// 	winner = game.field[0][0]
+	// }
+	// if game.field[1][0] == game.field[1][1] && game.field[1][1] == game.field[1][2] {
+	// 	winner = game.field[1][0]
+	// }
+	// if game.field[2][0] == game.field[2][1] && game.field[2][1] == game.field[2][2] {
+	// 	winner = game.field[2][0]
+	// }
+	// if game.field[0][0] == game.field[1][0] && game.field[1][0] == game.field[2][0] {
+	// 	winner = game.field[0][0]
+	// }
+	// if game.field[0][1] == game.field[1][1] && game.field[1][1] == game.field[2][1] {
+	// 	winner = game.field[0][1]
+	// }
+	// if game.field[0][2] == game.field[1][2] && game.field[1][2] == game.field[2][2] {
+	// 	winner = game.field[0][2]
+	// }
+	// if game.field[0][0] == game.field[1][1] && game.field[1][1] == game.field[2][2] {
+	// 	winner = game.field[0][0]
+	// }
+	// if game.field[0][2] == game.field[1][1] && game.field[1][1] == game.field[0][2] {
+	// 	winner = game.field[0][2]
+	// }
+

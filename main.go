@@ -1,15 +1,31 @@
 package main
 
 import (
-	"tictac/internal/args"
+	"net"
+
+	"tictac/internal/client"
+	"tictac/internal/envs"
 	"tictac/internal/server"
 )
 
 func main() {
-	args := args.GetArgs()
-	server.Start(server.ServerConfig{
-		IP:   args.ServerIP,
-		Port: args.ServerPort,
-	})
+	envs := envs.GetEnvs()
+
+	var connection net.Conn
+	switch envs.Mode {
+	case "client":
+		connection = client.Connect(client.ClientCofig{
+			IP:   envs.ClientIP,
+			Port: envs.ClientPort,
+		})
+	default:
+		connection = server.Start(server.ServerConfig{
+			IP:   envs.ServerIP,
+			Port: envs.ServerPort,
+		})
+	}
+
+	_ = connection
+
 	return
 }
