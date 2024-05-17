@@ -20,10 +20,20 @@ func NewGame(players Players) Game {
 	game := Game{
 		players:    players,
 		state:      Playing,
+		field:      NewField(),
 		xFieldMask: 0,
 		oFieldMask: 0,
 	}
 	return game
+}
+
+func NewField() [9]rune {
+	var field [9]rune
+	for i := range field {
+		field[i] = '_'
+	}
+
+	return field
 }
 
 func (game *Game) Move() error {
@@ -52,6 +62,7 @@ func (game *Game) Move() error {
 	game.Check()
 
 	game.turn = !game.turn
+	game.players.Message("Still Playing!\n")
 	return nil
 }
 
@@ -60,13 +71,27 @@ func (game *Game) Check() {
 
 	// Check 'O' state
 	switch game.oFieldMask {
-	case 7, 56, 448, 73, 146, 293, 273, 84: // Field states represented by a bit-wise field mask
+	case int16(0b111000000),
+		int16(0b000111000),
+		int16(0b000000111),
+		int16(0b100100100),
+		int16(0b010010010),
+		int16(0b001001001),
+		int16(0b100010001),
+		int16(0b001010100): // Field states represented by a bit-wise field mask
 		winner = 'O'
 	}
 
 	// Check 'X' state
 	switch game.xFieldMask {
-	case 7, 56, 448, 73, 146, 293, 273, 84: // Field states represented by a bit-wise field mask
+	case int16(0b111000000),
+		int16(0b000111000),
+		int16(0b000000111),
+		int16(0b100100100),
+		int16(0b010010010),
+		int16(0b001001001),
+		int16(0b100010001),
+		int16(0b001010100): // Field states represented by a bit-wise field mask
 		winner = 'X'
 	}
 
@@ -88,7 +113,7 @@ func (game *Game) FieldSync() {
 		} else if game.oFieldMask&(1<<i) > 0 {
 			game.field[i] = 'O'
 		} else {
-			game.field[i] = ' '
+			game.field[i] = '_'
 		}
 	}
 }
@@ -122,9 +147,9 @@ func (game *Game) PrettyField() string {
 	for i, cell := range game.field {
 		switch i {
 		case 2, 5, 8:
-			screen += fmt.Sprintf("%c\n", cell)
+			screen += fmt.Sprintf(" %c \t-\t%d | %d | %d \n", cell, i-1, i, i+1)
 		default:
-			screen += fmt.Sprintf("%c | ", cell)
+			screen += fmt.Sprintf(" %c |", cell)
 		}
 	}
 

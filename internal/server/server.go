@@ -1,7 +1,6 @@
 package server
 
 import (
-	"bufio"
 	"fmt"
 	"net"
 )
@@ -9,26 +8,6 @@ import (
 type ServerConfig struct {
 	IP   string
 	Port int
-}
-
-func Talk(conn net.Conn) {
-	defer conn.Close()
-	_, err := conn.Write([]byte("Hello, brodyaga!\n"))
-	if err != nil {
-		fmt.Printf("Failed to write to client: %s\n", err)
-	}
-
-	message, err := bufio.NewReader(conn).ReadString('\n')
-	if err != nil {
-		fmt.Printf("Failed to read from client: %s\n", err)
-	}
-
-	fmt.Printf("Client %q send: %s\n", conn.RemoteAddr(), message)
-
-	conn.Write([]byte("Сам дебил!\n"))
-	if err != nil {
-		fmt.Printf("Failed to write to client: %s\n", err)
-	}
 }
 
 func Start(conf ServerConfig) net.Conn {

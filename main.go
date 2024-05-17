@@ -7,15 +7,10 @@ import (
 	"tictac/internal/envs"
 	"tictac/internal/server"
 	"tictac/internal/tictac"
-	"tictac/internal/ui"
 )
 
 func main() {
 	envs := envs.GetEnvs()
-
-	ui.MainMenu(envs)
-
-	return
 
 	var connection net.Conn
 	switch envs.Mode {

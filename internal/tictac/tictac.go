@@ -17,6 +17,7 @@ func Start(player1 Player, player2 Player) {
 
 	game := NewGame(players)
 
+	players.Message(game.PrettyField())
 	for game.state == Playing {
 		err := game.Move()
 		if err != nil {
