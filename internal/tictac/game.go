@@ -67,43 +67,36 @@ func (game *Game) Move() error {
 }
 
 func (game *Game) Check() {
-	var winner rune
+	winning_states := []int16{
+		int16(0b111000000),
+		int16(0b000111000),
+		int16(0b000000111),
+		int16(0b100100100),
+		int16(0b010010010),
+		int16(0b001001001),
+		int16(0b100010001),
+		int16(0b001010100),
+	}
 
 	// Check 'O' state
-	switch game.oFieldMask {
-	case int16(0b111000000),
-		int16(0b000111000),
-		int16(0b000000111),
-		int16(0b100100100),
-		int16(0b010010010),
-		int16(0b001001001),
-		int16(0b100010001),
-		int16(0b001010100): // Field states represented by a bit-wise field mask
-		winner = 'O'
+	for _, state := range winning_states {
+		if game.oFieldMask&state == state {
+			game.state = OWins
+			return
+		}
+
+		if game.xFieldMask&state == state {
+			game.state = XWins
+			return
+		}
 	}
 
-	// Check 'X' state
-	switch game.xFieldMask {
-	case int16(0b111000000),
-		int16(0b000111000),
-		int16(0b000000111),
-		int16(0b100100100),
-		int16(0b010010010),
-		int16(0b001001001),
-		int16(0b100010001),
-		int16(0b001010100): // Field states represented by a bit-wise field mask
-		winner = 'X'
-	}
-
-	if winner == 'X' {
-		game.state = XWins
-	} else if winner == 'O' {
-		game.state = OWins
-	} else if game.xFieldMask^game.oFieldMask == 511 {
+	if game.xFieldMask^game.oFieldMask == 511 {
 		game.state = Draw
-	} else {
-		game.state = Playing
+		return
 	}
+
+	game.state = Playing
 }
 
 func (game *Game) FieldSync() {
