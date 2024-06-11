@@ -10,11 +10,11 @@ type ServerConfig struct {
 	Port int
 }
 
-func Start(conf ServerConfig) net.Conn {
+func HandleConnections(conf ServerConfig, connections_chan chan net.Conn) {
 	address, err := net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", conf.IP, conf.Port))
 	if err != nil {
 		fmt.Printf("Failed to resolve tcp address: %s\n", err)
-		return nil
+		return
 	}
 
 	fmt.Printf("Starting on %q\n", address.String())
@@ -22,7 +22,7 @@ func Start(conf ServerConfig) net.Conn {
 	listener, err := net.ListenTCP("tcp", address)
 	if err != nil {
 		fmt.Printf("Server failed to listen on %q: %s\n", address, err)
-		return nil
+		return
 	}
 
 	fmt.Printf("Server listening on %q\n", address)
@@ -35,6 +35,6 @@ func Start(conf ServerConfig) net.Conn {
 		}
 		fmt.Printf("Client connected %q\n", connection.RemoteAddr())
 
-		return connection
+		connections_chan <- connection
 	}
 }
