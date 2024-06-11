@@ -35,9 +35,6 @@ func Start(connection net.Conn) {
 
 	go func(reader *bufio.Reader) {
 		for {
-			// message, err := reader.ReadBytes('')
-			// var message []byte
-			// for {
 			b, err := reader.ReadByte()
 			if err != nil {
 				if err.Error() == "EOF" {
@@ -50,18 +47,6 @@ func Start(connection net.Conn) {
 				return
 			}
 			fmt.Print(string(b))
-			// if b == '\n' {
-			// fmt.Print(string(message))
-			// message = []byte{}
-
-			// }
-			// message = append(message, b)
-			// }
-			// if err != nil {
-			// 	fmt.Printf("Failed to read from server: %s\n", err)
-			// }
-
-			// fmt.Print(string(message))
 		}
 	}(reader)
 
