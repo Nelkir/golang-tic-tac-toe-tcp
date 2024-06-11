@@ -18,19 +18,25 @@ type Envs struct {
 func GetEnvs() Envs {
 	serverPort, err := strconv.Atoi(os.Getenv("SERVER_PORT"))
 	if err != nil {
-		fmt.Printf("Failed to parse server port variable: %s\n", err)
+		fmt.Printf(
+			"Failed to parse server port variable (probably SERVER_PORT is empty): %s\n",
+			err,
+		)
 		serverPort = 8080
 	}
 
 	clientPort, err := strconv.Atoi(os.Getenv("CLIENT_PORT"))
 	if err != nil {
-		fmt.Printf("Failed to parse client port variable: %s\n", err)
+		fmt.Printf(
+			"Failed to parse client port variable (probably SERVER_IP is empty): %s\n",
+			err,
+		)
 		clientPort = 8080
 	}
 
 	mode := strings.ToLower(os.Getenv("MODE"))
-	if mode != "server" || mode != "client" {
-		fmt.Printf("Unsupported mode %q. Supported: server, client", mode)
+	if mode != "server" && mode != "client" {
+		fmt.Printf("Mode is not supported or empty: %q. Supported: server, client\n", mode)
 		mode = "server"
 	}
 
