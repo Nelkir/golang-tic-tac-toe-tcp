@@ -44,6 +44,15 @@ func Start(connection net.Conn) {
 					fmt.Printf("Server closed connection\n")
 					connection.Close()
 					os.Exit(0)
+				}
+				fmt.Printf("Error occurred reading from server: %s\n", err)
+				connection.Close()
+				return
+			}
+			fmt.Print(string(b))
+			// if b == '\n' {
+			// fmt.Print(string(message))
+			// message = []byte{}
 
 			// }
 			// message = append(message, b)
