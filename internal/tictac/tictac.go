@@ -30,10 +30,14 @@ func Start(player1 Player, player2 Player) {
 			return
 		case OWins:
 			game.players.Message("O Wins!\n")
+			return
 		case Draw:
 			game.players.Message("Draw!\n")
+			return
 		case Error:
-			fmt.Printf("Player left game!\n")
+			game.players.Message("Player left the game!\n")
+			fmt.Printf("Player left the game!\n")
+			return
 		}
 		players.Message(game.PrettyField())
 	}
